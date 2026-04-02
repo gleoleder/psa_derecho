@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulacro PSA - UMSA Derecho</title>
+<!-- Google Identity Services — solo selector de cuenta, sin permisos extra -->
+<script async defer src="https://accounts.google.com/gsi/client" onload="onGisLoad()"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="bg-layer"></div>
+
+<!-- ════════════ LANDING ════════════ -->
+<div class="screen" id="landing">
+
+  <div class="umsa-badge">
+    Universidad Mayor de San Andrés
+  </div>
+  <h1 class="landing-title">Simulacro PSA<br>Derecho</h1>
+  <div class="psa-badge">Prueba de Suficiencia Académica</div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">100</div><div class="stat-label">Preguntas</div></div>
+    <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Opciones c/u</div></div>
+    <div class="stat-box"><div class="stat-num">51%</div><div class="stat-label">Para aprobar</div></div>
+  </div>
+
+  <div class="tags-row">
+    <span class="tag">CPE</span>
+    <span class="tag">DUDDHH</span>
+    <span class="tag">Rousseau</span>
+    <span class="tag">Historia de Bolivia</span>
+  </div>
+
+  <button class="btn-primary" onclick="showScreen('register')">🚀 Comenzar Simulacro</button>
+
+  <!-- QR DONACIÓN — menos intrusivo, al final -->
+  <div class="qr-banner" onclick="toggleQR(this)">
+    <img src="assets/qr-yape.jpeg" class="qr-img" alt="QR Donación Yape">
+    <div class="qr-banner-text">
+      <h4>☕ Apoya al creador</h4>
+      <p>Este simulacro es <strong>gratuito</strong>. Si te fue útil, apoya con cualquier monto via <strong>Yape</strong> a <strong>John Leonardo Cabrera Espindola</strong>.</p>
+      <div class="qr-hint">👆 Toca para agrandar</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════ REGISTER ════════════ -->
+<div class="screen hidden" id="register">
+
+  <div class="notice-box" style="animation:fadeUp 0.5s ease forwards;">
+    📋 Usamos tu cuenta de Google únicamente para <strong>identificarte</strong> y registrar tu resultado. Tus datos no se comparten con terceros.
+  </div>
+
+  <div class="register-card">
+
+    <!-- PASO 1: Login con Google -->
+    <div id="google-login-section">
+      <h2>Accede con Google</h2>
+      <p class="sub">Un clic y listo — sin formularios</p>
+
+      <div class="google-loading" id="google-loading" style="display:none">
+        <div class="google-spinner"></div>
+        <span id="google-loading-text">Conectando...</span>
+      </div>
+
+      <button class="btn-google" id="google-btn" onclick="handleGoogleLogin()" style="display:none">
+        <svg width="20" height="20" viewBox="0 0 48 48" style="flex-shrink:0">
+          <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.6 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.4-7.7 19.4-20 0-1.3-.1-2.7-.4-4z"/>
+          <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 13 24 13c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.6 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/>
+          <path fill="#4CAF50" d="M24 44c5.2 0 10-1.9 13.6-5.1l-6.3-5.3C29.6 35.5 26.9 36 24 36c-5.2 0-9.6-3.3-11.2-8l-6.6 5.1C9.5 39.4 16.3 44 24 44z"/>
+          <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.6l6.3 5.3C41.3 35.4 44 30 44 24c0-1.3-.1-2.7-.4-4z"/>
+        </svg>
+        Continuar con Google
+      </button>
+
+      <p class="google-error" id="google-error" style="display:none"></p>
+    </div>
+
+    <!-- PASO 2: Perfil cargado — solo elegir carrera -->
+    <div id="carrera-section" style="display:none">
+      <div class="google-profile">
+        <div class="gp-avatar" id="gp-avatar"></div>
+        <div class="gp-info">
+          <div class="gp-name"  id="gp-name"></div>
+          <div class="gp-email" id="gp-email"></div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:1.4rem">
+        <label>Carrera a la que postulas *</label>
+        <select id="inp-carrera">
+          <option value="">-- Seleccionar carrera --</option>
+          <option>Derecho</option>
+          <option>Ciencias Políticas</option>
+          <option>Ciencias Jurídicas y Políticas</option>
+          <option>Otra carrera UMSA</option>
+        </select>
+      </div>
+
+      <button class="btn-register" id="btn-start" onclick="startExam()">Iniciar Simulacro →</button>
+      <div class="saving-msg" id="saving-msg">⏳ Iniciando...</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════ EXAM ════════════ -->
+<div class="screen hidden" id="exam" style="padding:0;align-items:stretch;justify-content:flex-start;flex-direction:column;">
+  <div class="exam-header">
+    <div class="exam-logo">
+      <span>Simulacro PSA · UMSA</span>
+    </div>
+    <div class="exam-header-right">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <span class="exam-progress-text" id="prog-text">1 / 100</span>
+    </div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="prog-bar" style="width:1%"></div>
+  </div>
+  <div class="exam-scroll" id="exam-scroll">
+    <div class="exam-body">
+      <div class="question-wrapper" id="question-wrapper"></div>
+      <div class="keyboard-hint" id="kb-hint">Pulsa <kbd>A</kbd> · <kbd>B</kbd> · <kbd>C</kbd> · <kbd>D</kbd> · <kbd>E</kbd> para responder &nbsp;·&nbsp; <kbd>Enter</kbd> para siguiente</div>
+      <div class="score-strip">
+        <span class="score-pill c">✅ <span id="correct-count">0</span> correctas</span>
+        <span class="score-pill w">❌ <span id="wrong-count">0</span> incorrectas</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ RESULTS ════════════ -->
+<div class="screen hidden" id="results">
+
+  <div class="results-card">
+    <h2 id="res-title">Simulacro Completado</h2>
+    <div class="student-name" id="res-name"></div>
+    <div class="student-info" id="res-info"></div>
+    <div class="time-taken" id="res-time"></div>
+
+    <div class="big-score" id="res-score"></div>
+    <div class="score-label">Porcentaje de aciertos</div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-fill" id="score-bar"></div>
+    </div>
+
+    <div class="result-stats">
+      <div class="rs-box"><div class="rs-num c" id="res-correct">0</div><div class="rs-lbl">Correctas</div></div>
+      <div class="rs-box"><div class="rs-num w" id="res-wrong">0</div><div class="rs-lbl">Incorrectas</div></div>
+      <div class="rs-box"><div class="rs-num" style="color:var(--gold)" id="res-total">100</div><div class="rs-lbl">Total</div></div>
+    </div>
+
+    <div id="cat-breakdown"></div>
+
+    <div class="verdict" id="res-verdict"></div>
+    <button class="btn-restart" onclick="restart()">↩ Volver a intentar</button>
+  </div>
+
+  <!-- QR DONACIÓN ABAJO — clic para expandir/retraer -->
+  <div class="qr-banner big" onclick="toggleQR(this)" style="cursor:pointer;">
+    <img src="assets/qr-yape.jpeg" class="qr-img" alt="QR Yape">
+    <div class="qr-banner-text">
+      <h4>💜 ¿Te fue útil el simulacro?</h4>
+      <p>Apoya a <strong>John Leonardo Cabrera Espindola</strong> escaneando el QR con <strong>Yape</strong>. Tu aporte permite crear más exámenes PSA gratuitos para todos los postulantes UMSA. ¡Cualquier monto suma! 🙏</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="js/questions.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
