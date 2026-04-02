@@ -2,7 +2,7 @@
 // CONFIG — Google Apps Script Web App (sin OAuth popup)
 // Ver README_SHEETS.md para instrucciones de configuración
 // ═══════════════════════════════════════════════════════
-const APPS_SCRIPT_URL = 'TU_APPS_SCRIPT_URL_AQUI';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsyL3yG5kD1WOuJeenAgmbSuQDnPO0EzDwhp1415VG1nvfcINX-G1mvMwxXJe67GAuQA/exec';
 
 // ═══════════════════════════════════════════════════════
 // QR EXPANDIBLE
