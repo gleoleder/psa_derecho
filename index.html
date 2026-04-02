@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulacro PSA - UMSA Derecho</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="bg-layer"></div>
+
+<!-- ════════════ LANDING ════════════ -->
+<div class="screen" id="landing">
+
+  <!-- QR DONACIÓN ARRIBA — clic para expandir -->
+  <div class="qr-banner" style="margin-bottom:2rem;" onclick="toggleQR(this)">
+    <img src="assets/qr-yape.jpeg" class="qr-img" alt="QR Donación Yape">
+    <div class="qr-banner-text">
+      <h4>☕ Apoya al creador</h4>
+      <p>Este simulacro es <strong>gratuito</strong>. Si te fue útil, apoya con cualquier monto via <strong>Yape</strong> a <strong>John Leonardo Cabrera Espindola</strong> para crear más exámenes.</p>
+      <div class="qr-hint">👆 Toca para ampliar el QR</div>
+    </div>
+  </div>
+
+  <div class="umsa-badge">
+    Universidad Mayor de San Andrés
+  </div>
+  <h1 class="landing-title">Simulacro PSA<br>Derecho</h1>
+  <div class="psa-badge">Prueba de Suficiencia Académica</div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">100</div><div class="stat-label">Preguntas</div></div>
+    <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Opciones c/u</div></div>
+    <div class="stat-box"><div class="stat-num">51%</div><div class="stat-label">Para aprobar</div></div>
+  </div>
+
+  <div class="tags-row">
+    <span class="tag">CPE</span>
+    <span class="tag">DUDDHH</span>
+    <span class="tag">Rousseau</span>
+    <span class="tag">Historia de Bolivia</span>
+  </div>
+
+  <button class="btn-primary" onclick="showScreen('register')">🚀 Comenzar Simulacro</button>
+</div>
+
+<!-- ════════════ REGISTER ════════════ -->
+<div class="screen hidden" id="register">
+
+  <div class="notice-box" style="animation:fadeUp 0.5s ease forwards;">
+    📋 <strong>¿Por qué pedimos tus datos?</strong><br>
+    Para saber cuántas personas realizan el simulacro y seguir creando <strong>más exámenes pasados virtuales</strong> de la PSA UMSA. Tus datos no se compartirán con terceros.
+  </div>
+
+  <div class="register-card">
+    <h2>Registro de Postulante</h2>
+    <p class="sub">Ingresa tus datos para iniciar el simulacro PSA</p>
+
+    <div class="form-group">
+      <label>Nombre Completo *</label>
+      <input type="text" id="inp-name" placeholder="Ej. María García López" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label>Carrera a la que postulas *</label>
+      <select id="inp-carrera">
+        <option value="">-- Seleccionar carrera --</option>
+        <option>Derecho</option>
+        <option>Ciencias Políticas</option>
+        <option>Ciencias Jurídicas y Políticas</option>
+        <option>Otra carrera UMSA</option>
+      </select>
+    </div>
+
+    <button class="btn-register" id="btn-start" onclick="startExam()">Iniciar Simulacro →</button>
+    <div class="saving-msg" id="saving-msg">⏳ Iniciando...</div>
+  </div>
+</div>
+
+<!-- ════════════ EXAM ════════════ -->
+<div class="screen hidden" id="exam" style="padding:0;align-items:stretch;justify-content:flex-start;flex-direction:column;">
+  <div class="exam-header">
+    <div class="exam-logo">
+      <span>Simulacro PSA · UMSA</span>
+    </div>
+    <span class="exam-progress-text" id="prog-text">1 / 100</span>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="prog-bar" style="width:1%"></div>
+  </div>
+  <div class="exam-scroll">
+    <div class="exam-body">
+      <div class="question-wrapper" id="question-wrapper"></div>
+      <div class="score-strip">
+        <span class="score-pill c">✅ <span id="correct-count">0</span> correctas</span>
+        <span class="score-pill w">❌ <span id="wrong-count">0</span> incorrectas</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ RESULTS ════════════ -->
+<div class="screen hidden" id="results">
+
+  <div class="results-card">
+    <h2 id="res-title">Simulacro Completado</h2>
+    <div class="student-name" id="res-name"></div>
+    <div class="student-info" id="res-info"></div>
+    <div class="big-score" id="res-score"></div>
+    <div class="score-label">Porcentaje de aciertos</div>
+    <div class="result-stats">
+      <div class="rs-box"><div class="rs-num c" id="res-correct">0</div><div class="rs-lbl">Correctas</div></div>
+      <div class="rs-box"><div class="rs-num w" id="res-wrong">0</div><div class="rs-lbl">Incorrectas</div></div>
+      <div class="rs-box"><div class="rs-num" style="color:var(--gold)" id="res-total">100</div><div class="rs-lbl">Total</div></div>
+    </div>
+    <div class="verdict" id="res-verdict"></div>
+    <button class="btn-restart" onclick="restart()">↩ Volver a intentar</button>
+  </div>
+
+  <!-- QR DONACIÓN ABAJO — clic para expandir/retraer -->
+  <div class="qr-banner big" onclick="toggleQR(this)" style="cursor:pointer;">
+    <img src="assets/qr-yape.jpeg" class="qr-img" alt="QR Yape">
+    <div class="qr-banner-text">
+      <h4>💜 ¿Te fue útil el simulacro?</h4>
+      <p>Apoya a <strong>John Leonardo Cabrera Espindola</strong> escaneando el QR con <strong>Yape</strong>. Tu aporte permite crear más exámenes PSA gratuitos para todos los postulantes UMSA. ¡Cualquier monto suma! 🙏</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="js/questions.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
